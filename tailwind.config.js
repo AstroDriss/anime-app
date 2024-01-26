@@ -7,7 +7,7 @@ export default {
         dark: "#0D0D0D",
         darkGray: "#1A1A1A",
         light: "#FAFAFA",
-        primary: "#F3D14A",
+        primary: "rgb(255 180 65 / <alpha-value>)",
       },
     },
   },
