@@ -32,20 +32,25 @@ const Recommendation = ({ className }: Props) => {
           <FaArrowRightLong fill="black" />
         </button>
         {recommended.map((anime) => (
-          <img
+          <div
+            key={anime.mal_id}
             style={{
               translate: `-${100 * current}%`,
             }}
-            className="min-w-full object-cover max-h-full transition-all"
-            src={anime.img}
-            alt=""
-          />
+            className="max-h-full transition-all min-w-full relative before:bg-gradient-to-r before:from-gray-950/80 before:to-transparent before:inset-0 before:absolute"
+          >
+            <img
+              className="object-cover h-full w-full"
+              src={anime.img}
+              alt={`${anime.title} cover`}
+            />
 
-          // <div className="absolute ">
-          //   <p>Home | TC</p>
-          //   <h2>{anime.title}</h2>
-          //   <p>{anime.desc}</p>
-          // </div>
+            <div className="absolute bottom-7 left-7">
+              <p className="text-xs text-white/50">Home | TV</p>
+              <h2 className="text-4xl my-4 font-bold">{anime.title}</h2>
+              <p className="max-w-72 text-gray-300 leading-5">{anime.desc}</p>
+            </div>
+          </div>
         ))}
 
         <div className="flex gap-3 absolute bottom-2 left-1/2 -translate-x-1/2">
