@@ -2,7 +2,7 @@ import avatar from "../assets/avatar.png";
 
 const Ad = () => {
   return (
-    <aside className="bg-gradient-to-r from-yellow-200 to-primary p-8 rounded-md flex sm:flex-row sm:justify-between relative flex-col-reverse items-center text-center sm:text-left">
+    <aside className="bg-gradient-to-r from-yellow-200 to-primary p-6 rounded-md flex sm:flex-row sm:justify-between relative flex-col-reverse items-center text-center sm:text-left">
       <div>
         <h2 className="text-dark text-2xl uppercase mb-4 z-20 relative">
           want to visite the creator's website?

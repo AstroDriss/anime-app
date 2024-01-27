@@ -4,6 +4,7 @@ import { IoIosHeartEmpty } from "react-icons/io";
 import { RiFireLine } from "react-icons/ri";
 import { AxiosError, CanceledError } from "axios";
 import animeService, { Anime } from "../services/anime-service";
+import { Link } from "react-router-dom";
 
 const Trending = () => {
   const [trending, setTranding] = useState<Anime[]>([]);
@@ -40,24 +41,26 @@ const Trending = () => {
 
         {trending.map((anime: Anime, i) => (
           <li key={anime.mal_id} className="flex p-4 gap-2 items-center">
-            <span className="text-xg">0{i + 1}</span>
-            <img
-              src={anime.images.webp.small_image_url}
-              alt={`${anime.title} cover`}
-            />
-            <div>
-              <p>{anime.title}</p>
-              <div className="flex gap-2 text-gray-400">
-                <span className="flex items-center gap-1">
-                  <IoEyeOutline /> {anime.members}
-                </span>
-                <span className="flex items-center gap-1">
-                  <IoIosHeartEmpty />
+            <Link className="contents" to={`/anime/${anime.mal_id}`}>
+              <span className="text-xg">0{i + 1}</span>
+              <img
+                src={anime.images.webp.small_image_url}
+                alt={`${anime.title} cover`}
+              />
+              <div>
+                <p>{anime.title}</p>
+                <div className="flex gap-2 text-gray-400">
+                  <span className="flex items-center gap-1">
+                    <IoEyeOutline /> {anime.members}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <IoIosHeartEmpty />
 
-                  {anime.favorites}
-                </span>
+                    {anime.favorites}
+                  </span>
+                </div>
               </div>
-            </div>
+            </Link>
           </li>
         ))}
       </ul>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BsStars } from "react-icons/bs";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { recommended } from "../constants";
+import { Link } from "react-router-dom";
 
 interface Props {
   className?: string;
@@ -37,7 +38,7 @@ const Recommendation = ({ className }: Props) => {
             style={{
               translate: `-${100 * current}%`,
             }}
-            className="max-h-full transition-all min-w-full relative before:bg-gradient-to-r before:from-gray-950/80 before:to-transparent before:inset-0 before:absolute"
+            className="max-h-full transition-all min-w-full relative before:bg-gradient-to-t  before:from-gray-950/80 before:to-transparent before:inset-0 before:absolute"
           >
             <img
               className="object-cover h-full w-full"
@@ -48,15 +49,20 @@ const Recommendation = ({ className }: Props) => {
             <div className="absolute bottom-7 left-7">
               <p className="text-xs text-white/50">Home | TV</p>
               <h2 className="text-4xl my-4 font-bold">{anime.title}</h2>
-              <p className="max-w-72 text-gray-300 leading-5">{anime.desc}</p>
+              <p className="max-w-72 text-gray-300 leading-5">
+                {anime.desc}...
+                <Link to={`/anime/${anime.mal_id}`} className="underline">
+                  more
+                </Link>
+              </p>
             </div>
           </div>
         ))}
 
-        <div className="flex gap-3 absolute bottom-2 left-1/2 -translate-x-1/2">
+        <div className="flex gap-4 absolute bottom-2 left-1/2 -translate-x-1/2">
           {recommended.map((_, i) => (
             <button
-              className={`w-3 h-3 rounded-full ${
+              className={`w-[7px] h-[7px] rounded-full ${
                 i == current ? "bg-primary" : "bg-white opacity-80"
               }`}
               onClick={() => setCurrent(i)}

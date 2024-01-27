@@ -18,6 +18,30 @@ export interface Anime {
   };
   favorites: number;
   members: number;
+  synopsis: string;
+  episodes: number;
+  duration: string;
+  year: number;
+  aired: {
+    from: string;
+    to: string;
+    prop: {
+      from: {
+        year: number;
+      };
+      to: {
+        year: number;
+      };
+    };
+    string: string;
+  };
+  trailer: {
+    embed_url?: string;
+    images: {
+      image_url?: string;
+      large_imgae_url?: string;
+    };
+  };
 }
 
 type Image = {
@@ -49,6 +73,16 @@ export type AnimeRecommanded = {
 };
 
 class AnimeService {
+  getAnimeByID(id: number) {
+    const controller = new AbortController();
+
+    const request = apiClient.get("/anime/" + id, {
+      signal: controller.signal,
+    });
+
+    return { request, cancel: () => controller.abort() };
+  }
+
   getTrending() {
     const controller = new AbortController();
 
@@ -72,6 +106,34 @@ class AnimeService {
       params: {
         page: 1,
       },
+    });
+
+    return { request, cancel: () => controller.abort() };
+  }
+
+  getAnime(params: {
+    page: number;
+    type?:
+      | "tv"
+      | "movie"
+      | "ova"
+      | "special"
+      | "ona"
+      | "music"
+      | "cm"
+      | "pv"
+      | "tv-special";
+    rating?: "g" | "pg" | "pg13" | "r17" | "r" | "rx";
+    sort?: "desc" | "asc";
+    sfw?: boolean;
+    order_by?: string;
+    status: string;
+  }) {
+    const controller = new AbortController();
+
+    const request = apiClient.get("/anime", {
+      signal: controller.signal,
+      params: params,
     });
 
     return { request, cancel: () => controller.abort() };
