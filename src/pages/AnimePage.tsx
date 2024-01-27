@@ -1,58 +1,54 @@
-import { AxiosError, CanceledError } from "axios";
-import animeService, { Anime } from "../services/anime-service";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import useAnimes from "../hooks/useAnime";
+import { AnimeQuery } from "../services/anime-service";
 
+let q: string; // queryString
 const AnimePage = () => {
-  const [animes, setAnimes] = useState<Anime[]>([]);
-  const [error, setError] = useState(false);
-  const [isLoading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loadMore, setLoadMore] = useState(false);
+  const [animeQuery, setAnimeQuery] = useState<AnimeQuery>({
+    page: 1,
+    sfw: true,
+    sort: "desc",
+    order_by: "mal_id",
+    genres_exclude: "12",
+  });
+  const { animes, isLoading, loadMore, error } = useAnimes(
+    animeQuery as AnimeQuery,
+  );
+
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    setLoading(true);
-
-    const { request, cancel } = animeService.getAnime({
-      page: currentPage,
-      sfw: true,
-      order_by: "mal_id",
-      status: "airing",
-      sort: "desc",
-    });
-    request
-      .then((res) => {
-        setAnimes((prevAnime) => [...prevAnime, ...res.data.data]);
-        setLoadMore(res.data.pagination.has_next_page);
-        setLoading(false);
-      })
-      .catch((err: AxiosError) => {
-        if (err instanceof CanceledError) return;
-        setError(true);
-        setLoading(false);
-      });
-
-    return () => cancel();
-  }, [currentPage]);
+    q = searchParams.get("q") || "";
+    setAnimeQuery({ ...animeQuery, q, page: currentPage });
+  }, [currentPage, searchParams]);
 
   return (
     <main>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5">
-        {animes.map((anime) => (
-          <article key={anime.mal_id} className="focus-within:outline">
-            <Link
-              to={`/anime/${anime.mal_id}`}
-              className="focus-within:outline-none"
-            >
-              <img
-                className="aspect-[267/475] rounded-md object-cover"
-                src={anime.images.webp.large_image_url}
-                alt=""
-              />
-              <h2>{anime.title}</h2>
-            </Link>
-          </article>
-        ))}
+        {animes.map((anime, i) => {
+          if (i != 0 && anime.mal_id != animes[i - 1]["mal_id"])
+            return (
+              <article key={anime.mal_id} className="focus-within:outline">
+                <Link
+                  to={`/anime/${anime.mal_id}`}
+                  className="focus-within:outline-none"
+                >
+                  <img
+                    className="skeleton aspect-[267/475] w-full rounded-md object-cover"
+                    src={
+                      anime.images.webp.large_image_url ||
+                      anime.images.jpg.large_image_url ||
+                      ""
+                    }
+                    alt=""
+                  />
+                  <h2>{anime.title}</h2>
+                </Link>
+              </article>
+            );
+        })}
 
         {isLoading &&
           [0, 0, 0, 0, 0, 0, 0, 0].map((_, i) => <AnimeCardSkeleton key={i} />)}

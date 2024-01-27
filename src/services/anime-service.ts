@@ -72,6 +72,27 @@ export type AnimeRecommanded = {
   user: User;
 };
 
+export interface AnimeQuery {
+  page?: number;
+  type?:
+    | "tv"
+    | "movie"
+    | "ova"
+    | "special"
+    | "ona"
+    | "music"
+    | "cm"
+    | "pv"
+    | "tv-special";
+  rating?: "g" | "pg" | "pg13" | "r17" | "r" | "rx";
+  sort?: "desc" | "asc";
+  sfw?: boolean;
+  order_by?: string;
+  q?: string;
+  status?: "airing" | "complete" | "upcoming";
+  genres_exclude?: string;
+}
+
 class AnimeService {
   getAnimeByID(id: number) {
     const controller = new AbortController();
@@ -111,29 +132,22 @@ class AnimeService {
     return { request, cancel: () => controller.abort() };
   }
 
-  getAnime(params: {
-    page: number;
-    type?:
-      | "tv"
-      | "movie"
-      | "ova"
-      | "special"
-      | "ona"
-      | "music"
-      | "cm"
-      | "pv"
-      | "tv-special";
-    rating?: "g" | "pg" | "pg13" | "r17" | "r" | "rx";
-    sort?: "desc" | "asc";
-    sfw?: boolean;
-    order_by?: string;
-    status: string;
-  }) {
+  getAnime(params: AnimeQuery) {
     const controller = new AbortController();
 
     const request = apiClient.get("/anime", {
       signal: controller.signal,
       params: params,
+    });
+
+    return { request, cancel: () => controller.abort() };
+  }
+
+  getAnimeCharacters(id: number) {
+    const controller = new AbortController();
+
+    const request = apiClient.get(`/anime/${id}/characters`, {
+      signal: controller.signal,
     });
 
     return { request, cancel: () => controller.abort() };

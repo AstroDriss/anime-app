@@ -41,7 +41,7 @@ const AnimeDetails = () => {
         <img
           className="skeleton h-[450px] w-[317px] rounded-lg object-cover"
           src={anime?.images.webp.large_image_url}
-          alt=""
+          alt={anime?.title}
         />
 
         <div className="col-span-2">
@@ -63,7 +63,7 @@ const AnimeDetails = () => {
           {anime?.trailer.embed_url && (
             <button
               onClick={() => setTrailerDialog(true)}
-              className="flex items-center gap-1 rounded-sm bg-primary px-2 py-1 text-dark"
+              className="mt-2 flex items-center gap-1 rounded-sm bg-primary px-2 py-1 text-dark"
             >
               <IoPlay /> Trailer
             </button>

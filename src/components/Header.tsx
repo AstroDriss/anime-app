@@ -15,19 +15,19 @@ const Header = () => {
   };
 
   return (
-    <header className="py-3 flex items-center justify-between gap-2 mb-5">
-      <Link to="/" className="text-primary font-bold text-xl">
+    <header className="sticky top-0 z-20 mb-5 flex items-center justify-between gap-2 bg-dark py-3">
+      <Link to="/" className="text-xl font-bold text-primary">
         AniLand
       </Link>
 
       <form
-        className="flex items-center gap-1 bg-darkGray px-2 rounded-md w-80 focus-within:outline-gray-500 focus-within:outline"
+        className="flex w-80 items-center gap-1 rounded-md bg-darkGray px-2 focus-within:outline focus-within:outline-gray-500"
         onSubmit={handleSubmit}
       >
         <input
           type="text"
           aria-label="Search"
-          className="bg-transparent w-full py-1 p-2 order-2 focus:outline-none"
+          className="order-2 w-full bg-transparent p-2 py-1 focus:outline-none"
           placeholder="Search Anime"
           ref={searchRef}
         />
