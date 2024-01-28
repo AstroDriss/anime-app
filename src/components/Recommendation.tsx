@@ -62,6 +62,7 @@ const Recommendation = ({ className }: Props) => {
         <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-4">
           {recommended.map((_, i) => (
             <button
+              key={i}
               className={`h-[7px] w-[7px] rounded-full ${
                 i == current ? "bg-primary" : "bg-white opacity-80"
               }`}

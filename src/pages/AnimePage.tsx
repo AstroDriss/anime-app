@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import useAnimes from "../hooks/useAnimes";
 import { AnimeQuery } from "../services/anime-service";
 import genreService, { Genre } from "../services/genre-service";
+import Card from "../components/Card";
 
 let genreName: string | undefined;
 const queryString: { [key: string]: string } = {}; // queryString
@@ -50,25 +51,7 @@ const AnimePage = () => {
       <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5">
         {animes.map((anime, i) => {
           if (i != 0 && anime.mal_id != animes[i - 1]["mal_id"])
-            return (
-              <article key={anime.mal_id} className="focus-within:outline">
-                <Link
-                  to={`/anime/${anime.mal_id}`}
-                  className="focus-within:outline-none"
-                >
-                  <img
-                    className="skeleton aspect-[267/475] w-full rounded-md object-cover"
-                    src={
-                      anime.images.webp.large_image_url ||
-                      anime.images.jpg.large_image_url ||
-                      ""
-                    }
-                    alt=""
-                  />
-                  <h2>{anime.title}</h2>
-                </Link>
-              </article>
-            );
+            return <Card key={anime.mal_id} anime={anime} />;
         })}
 
         {isLoading &&
