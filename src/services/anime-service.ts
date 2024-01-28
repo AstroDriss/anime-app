@@ -42,6 +42,12 @@ export interface Anime {
       large_imgae_url?: string;
     };
   };
+  genres: {
+    mal_id: number;
+    name: string;
+  }[];
+  score: number;
+  scored_by: number;
 }
 
 type Image = {
@@ -91,6 +97,34 @@ export interface AnimeQuery {
   q?: string;
   status?: "airing" | "complete" | "upcoming";
   genres_exclude?: string;
+}
+
+export interface Character {
+  character: {
+    mal_id: number;
+    images: {
+      jpg: {
+        image_url: string;
+      };
+      webp: {
+        image_url: string;
+      };
+    };
+    name: string;
+  };
+  voice_actors: [
+    {
+      person: {
+        images: {
+          jpg: {
+            image_url: string;
+          };
+        };
+        name: string;
+      };
+      language: string;
+    },
+  ];
 }
 
 class AnimeService {
@@ -143,7 +177,7 @@ class AnimeService {
     return { request, cancel: () => controller.abort() };
   }
 
-  getAnimeCharacters(id: number) {
+  getAnimeCharacters(id: number | string) {
     const controller = new AbortController();
 
     const request = apiClient.get(`/anime/${id}/characters`, {

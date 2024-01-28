@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import useAnimes from "../hooks/useAnime";
 import { AnimeQuery } from "../services/anime-service";
+import genreService, { Genre } from "../services/genre-service";
 
-let q: string; // queryString
+let genreName: string | undefined;
+const queryString: { [key: string]: string } = {}; // queryString
 const AnimePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [animeQuery, setAnimeQuery] = useState<AnimeQuery>({
@@ -20,12 +22,31 @@ const AnimePage = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    q = searchParams.get("q") || "";
-    setAnimeQuery({ ...animeQuery, q, page: currentPage });
-  }, [currentPage, searchParams]);
+    queryString["q"] = searchParams.get("q") || "";
+    queryString["genres"] = searchParams.get("genres") || "";
+    setAnimeQuery({ ...animeQuery, ...queryString, page: 1 });
+    getGenreByID(queryString.genres);
+  }, [searchParams]);
+
+  useEffect(() => {
+    setAnimeQuery({ ...animeQuery, ...queryString, page: currentPage });
+  }, [currentPage]);
+
+  function getGenreByID(id: number | string) {
+    const { request } = genreService.getGenres();
+
+    request.then((res) => {
+      const genres = res.data.data as Genre[];
+      const genre = genres.find((genre) => genre.mal_id == id);
+      genreName = genre?.name;
+    });
+  }
 
   return (
     <main>
+      <h1 className="mb-4 text-2xl text-primary">
+        {genreName || "All"} Animes
+      </h1>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5">
         {animes.map((anime, i) => {
           if (i != 0 && anime.mal_id != animes[i - 1]["mal_id"])

@@ -1,17 +1,27 @@
 import { useRef } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { navLinks } from "../constants";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import { navLinks } from "../constants/index";
 
 const Header = () => {
   const { pathname } = useLocation();
   const searchRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    navigate(`/anime?q=${searchRef?.current?.value}`);
+    if (pathname !== "/anime") {
+      navigate(`/anime?q=${searchRef?.current?.value}`);
+    } else {
+      searchParams.set("q", searchRef?.current?.value as string);
+      setSearchParams(searchParams);
+    }
   };
 
   return (
