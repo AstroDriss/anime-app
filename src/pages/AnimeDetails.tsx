@@ -1,37 +1,28 @@
 import { Link, useParams } from "react-router-dom";
-import animeService, { Anime } from "../services/anime-service";
-import { useEffect, useState } from "react";
-import { CanceledError } from "axios";
+import { useState } from "react";
 import NotFound from "./NotFound";
 import { IoPlay } from "react-icons/io5";
 import TrailerDialog from "../components/TrailerDialog";
 import CharactersGrid from "../components/CharactersGrid";
 import { BsStar } from "react-icons/bs";
+import useAnime from "../hooks/useAnime";
 
 const AnimeDetails = () => {
   const { mal_id } = useParams();
-  const [anime, setAnime] = useState<Anime>();
   const [trailerDialog, setTrailerDialog] = useState(false);
 
   if (!mal_id?.match(/\d+/)) return <NotFound />;
 
-  useEffect(() => {
-    const { request, cancel } = animeService.getAnimeByID(parseInt(mal_id));
-
-    request
-      .then((res) => {
-        setAnime(res.data.data);
-      })
-      .catch((err) => {
-        if (err instanceof CanceledError) return;
-        console.log(err);
-      });
-
-    return () => cancel();
-  }, []);
+  const { anime, isLoading, error } = useAnime(parseInt(mal_id));
 
   return (
     <main className="text-gray-300">
+      {error && (
+        <div className="rounded-md bg-red-400 p-2 text-center text-red-900">
+          <strong>{error}</strong>
+        </div>
+      )}
+
       {trailerDialog && (
         <TrailerDialog
           url={anime?.trailer.embed_url as string}
@@ -47,6 +38,8 @@ const AnimeDetails = () => {
         />
 
         <div className="sm:col-span-1 sm:block min-[940px]:col-span-2">
+          {isLoading && <AnimeInfoSkeleton />}
+
           <small>{anime?.type}</small>
           <h1 className="text-3xl font-bold text-light">
             {anime?.title}{" "}
@@ -59,7 +52,7 @@ const AnimeDetails = () => {
           </h1>
 
           <small>
-            {anime?.episodes} eps | {anime?.duration}
+            {anime?.episodes && anime?.episodes + " eps | "} {anime?.duration}
           </small>
 
           {anime?.trailer.embed_url && (
@@ -92,8 +85,6 @@ const AnimeDetails = () => {
             ))}
           </ul>
 
-          {/* {anime?.genres.map((gen) => gen.name).join(" | ")} */}
-
           <p className="mt-4 hidden min-[940px]:block">{anime?.synopsis}</p>
         </div>
 
@@ -105,5 +96,32 @@ const AnimeDetails = () => {
     </main>
   );
 };
+
+function AnimeInfoSkeleton() {
+  return (
+    <>
+      <div className="skeleton mb-1 h-2 w-6"></div>
+      <div className="skeleton h-4 w-72"></div>
+      <div className="skeleton my-2 h-2 w-10"></div>
+
+      <div className="skeleton mt-3 h-10 w-20"></div>
+
+      <div className="mt-2 flex flex-wrap gap-2">
+        <div className="skeleton h-5 w-12 rounded-full border border-current px-3"></div>
+      </div>
+      <div className="mt-4 hidden min-[940px]:block">
+        <div className="skeleton mb-2 h-2"></div>
+        <div className="skeleton mb-2 h-2"></div>
+        <div className="skeleton mb-2 h-2"></div>
+        <div className="skeleton mb-2 h-2"></div>
+        <div className="skeleton mb-2 h-2"></div>
+        <div className="skeleton mb-2 h-2"></div>
+        <div className="skeleton mb-2 h-2"></div>
+        <div className="skeleton mb-2 h-2"></div>
+        <div className="skeleton mb-2 h-2 w-11/12"></div>
+      </div>
+    </>
+  );
+}
 
 export default AnimeDetails;

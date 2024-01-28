@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import useAnimes from "../hooks/useAnime";
+import useAnimes from "../hooks/useAnimes";
 import { AnimeQuery } from "../services/anime-service";
 import genreService, { Genre } from "../services/genre-service";
 
