@@ -33,5 +33,5 @@ export const recommended = [
 export const navLinks = [
   { id: 1, text: "home", path: "/" },
   { id: 2, text: "anime", path: "/anime" },
-  { id: 3, text: "popular", path: "/popular" },
+  { id: 3, text: "about", path: "/about" },
 ];

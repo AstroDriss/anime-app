@@ -27,7 +27,7 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-20 mb-5 flex items-center justify-between gap-2 bg-dark py-3">
       <Link to="/" className="text-xl font-bold text-primary">
-        AniLand
+        アニメ
       </Link>
 
       <form
