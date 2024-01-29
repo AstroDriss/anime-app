@@ -18,7 +18,7 @@ const Recommendation = ({ className }: Props) => {
 
   return (
     <div className={`${className} max-h-full self-stretch`}>
-      <h2 className="mb-4 flex items-center gap-1 text-primary">
+      <h2 className="mb-4 flex items-center gap-1 overflow-hidden text-primary">
         <BsStars />
         For You
       </h2>

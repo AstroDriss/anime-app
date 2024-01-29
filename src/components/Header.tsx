@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import {
   Link,
@@ -7,11 +7,13 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { navLinks } from "../constants/index";
+import { IoClose, IoMenuOutline } from "react-icons/io5";
 
 const Header = () => {
   const { pathname } = useLocation();
   const searchRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const [toggle, setToggle] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,7 +49,7 @@ const Header = () => {
       </form>
 
       <nav>
-        <ul className="flex gap-10">
+        <ul className="hidden gap-10 sm:flex">
           {navLinks.map((link) => (
             <li key={link.id}>
               <Link
@@ -63,6 +65,33 @@ const Header = () => {
           ))}
         </ul>
       </nav>
+
+      <button onClick={() => setToggle(!toggle)} className="block sm:hidden">
+        {toggle ? <IoClose size={28} /> : <IoMenuOutline size={28} />}
+      </button>
+
+      {toggle && (
+        <nav className="absolute right-0 top-16 block rounded-md bg-darkGray sm:hidden">
+          <ul className="flex flex-col p-4">
+            {navLinks.map((link) => (
+              <li
+                className="border-b border-gray-400 py-3 last:border-none"
+                key={link.id}
+              >
+                <Link
+                  to={link.path}
+                  aria-current={pathname == link.path && `page`}
+                  className={`${
+                    pathname == link.path ? "text-primary" : ""
+                  } px-10  capitalize`}
+                >
+                  {link.text}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
     </header>
   );
 };

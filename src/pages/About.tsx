@@ -2,7 +2,7 @@ import welcom from "../../public/hello-removebg.png";
 
 const About = () => {
   return (
-    <main className="flex gap-2 text-gray-300">
+    <main className="block gap-2 text-gray-300 sm:flex">
       <div>
         <h1 className="mb-4 text-3xl text-light">About</h1>
         <p>

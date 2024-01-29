@@ -15,13 +15,13 @@ export const Home = () => {
         options={{ type: "movie" }}
         title="Anime Movies"
         path={`/anime?type=movie&order_by=popularity`}
-        className="my-5"
+        className="my-6"
       />
       <AnimeSuspense
         options={{ type: "tv", status: "upcoming" }}
         title="Upcoming Animes"
         path={`/anime?type=tv&status=upcoming`}
-        className="my-5"
+        className="my-6"
       />
     </main>
   );
