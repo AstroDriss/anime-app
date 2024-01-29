@@ -95,6 +95,7 @@ export interface AnimeQuery {
   sfw?: boolean;
   order_by?: string;
   limit?: number;
+  genres?: string;
   q?: string;
   status?: "airing" | "complete" | "upcoming";
   genres_exclude?: string;

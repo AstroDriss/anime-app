@@ -7,7 +7,7 @@ interface Props {
 const CharactersGrid = ({ id }: Props) => {
   const { characters, error, isLoading } = useAnimeCharacters(id);
 
-  if (error) return <p>Error</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <>

@@ -4,7 +4,7 @@ import { AxiosError, CanceledError } from "axios";
 
 const useAnimeCharacters = (id: number | string) => {
   const [characters, setCharacters] = useState<Character[]>([]);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,10 +15,11 @@ const useAnimeCharacters = (id: number | string) => {
       .then((res) => {
         setCharacters(res.data.data);
         setLoading(false);
+        setError("");
       })
       .catch((err: AxiosError) => {
         if (err instanceof CanceledError) return;
-        setError(true);
+        setError(err.message);
         setLoading(false);
       });
 

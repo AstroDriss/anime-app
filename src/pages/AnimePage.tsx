@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useAnimes from "../hooks/useAnimes";
 import { AnimeQuery } from "../services/anime-service";
-import genreService, { Genre } from "../services/genre-service";
+import genreService from "../services/genre-service";
 import Card from "../components/Card";
 import AnimeCardSkeleton from "../components/AnimeCardSkeleton";
+import GenreSelect from "../components/GenreSelect";
 
-let genreName: string | undefined;
 const queryString: { [key: string]: string } = {}; // queryString
 const AnimePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,11 +17,12 @@ const AnimePage = () => {
     order_by: "favorites",
     genres_exclude: "12",
   });
+  const [genre, setGenre] = useState("");
   const { animes, isLoading, loadMore, error } = useAnimes(
     animeQuery as AnimeQuery,
   );
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     queryString["q"] = searchParams.get("q") || "";
@@ -31,27 +32,32 @@ const AnimePage = () => {
     queryString["order_by"] = searchParams.get("order_by") || "popularity";
 
     setAnimeQuery({ ...animeQuery, ...queryString, page: 1 });
-    getGenreByID(queryString.genres);
+    setGenre(getGenreByID(queryString.genres));
   }, [searchParams]);
 
   useEffect(() => {
-    setAnimeQuery({ ...animeQuery, ...queryString, page: currentPage });
+    setAnimeQuery({
+      ...animeQuery,
+      ...queryString,
+      page: currentPage,
+    });
   }, [currentPage]);
 
-  function getGenreByID(id: number | string) {
-    const { request } = genreService.getGenres();
+  function handleGenreChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    searchParams.set("genres", e.target.value as string);
+    setSearchParams(searchParams);
+  }
 
-    request.then((res) => {
-      const genres = res.data.data as Genre[];
-      const genre = genres.find((genre) => genre.mal_id == id);
-      genreName = genre?.name;
-    });
+  function getGenreByID(id: number | string) {
+    const genres = genreService.getGenres();
+
+    return genres.find((genre) => genre.mal_id == id)?.name || "";
   }
 
   return (
     <main>
       <h1 className="mb-4 text-2xl text-primary">
-        {genreName || "All"} Animes
+        <GenreSelect genre={genre} handleChange={handleGenreChange} /> Animes
       </h1>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5">
         {animes.map((anime, i) => {

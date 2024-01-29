@@ -54,7 +54,6 @@ const AnimeSuspense = ({ options, title, path, ...rest }: Props) => {
           view more <BsArrowRight />
         </Link>
       </div>
-      {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
       <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-5">

@@ -11,6 +11,7 @@ const Card = ({ anime, ...rest }: Props) => {
     <article {...rest} className="focus-within:outline">
       <Link to={`/anime/${anime.mal_id}`} className="focus-within:outline-none">
         <img
+          loading="lazy"
           className="skeleton aspect-[267/475] w-full rounded-md object-cover transition-all hover:scale-105"
           src={
             anime.images.webp.large_image_url ||
