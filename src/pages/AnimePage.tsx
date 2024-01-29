@@ -4,6 +4,7 @@ import useAnimes from "../hooks/useAnimes";
 import { AnimeQuery } from "../services/anime-service";
 import genreService, { Genre } from "../services/genre-service";
 import Card from "../components/Card";
+import AnimeCardSkeleton from "../components/AnimeCardSkeleton";
 
 let genreName: string | undefined;
 const queryString: { [key: string]: string } = {}; // queryString
@@ -12,8 +13,8 @@ const AnimePage = () => {
   const [animeQuery, setAnimeQuery] = useState<AnimeQuery>({
     page: 1,
     sfw: true,
-    sort: "desc",
-    order_by: "mal_id",
+    sort: "asc",
+    order_by: "favorites",
     genres_exclude: "12",
   });
   const { animes, isLoading, loadMore, error } = useAnimes(
@@ -25,6 +26,10 @@ const AnimePage = () => {
   useEffect(() => {
     queryString["q"] = searchParams.get("q") || "";
     queryString["genres"] = searchParams.get("genres") || "";
+    queryString["type"] = searchParams.get("type") || "";
+    queryString["status"] = searchParams.get("status") || "";
+    queryString["order_by"] = searchParams.get("order_by") || "popularity";
+
     setAnimeQuery({ ...animeQuery, ...queryString, page: 1 });
     getGenreByID(queryString.genres);
   }, [searchParams]);
@@ -72,16 +77,5 @@ const AnimePage = () => {
     </main>
   );
 };
-
-function AnimeCardSkeleton({ ...props }) {
-  return (
-    <div {...props}>
-      <div className="skeleton aspect-[267/475] rounded-md object-cover"></div>
-
-      <div className="skeleton mt-2 h-3 w-full"></div>
-      <div className="skeleton mt-2 h-3 w-10/12"></div>
-    </div>
-  );
-}
 
 export default AnimePage;
