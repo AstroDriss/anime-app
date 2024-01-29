@@ -23,11 +23,11 @@ const Card = ({ anime, ...rest }: Props) => {
           />
         </div>
         {anime.score && (
-          <p className="line-2 flex items-center gap-1 text-sm text-gray-400">
+          <p className="flex items-center gap-1 text-sm text-gray-400">
             <BsStar className="text-primary" /> {anime.score}
           </p>
         )}
-        <h2>{anime.title}</h2>
+        <h2 className="line-2">{anime.title}</h2>
       </Link>
     </article>
   );

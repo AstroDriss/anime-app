@@ -1,5 +1,3 @@
-import welcom from "../../public/hello-removebg.png";
-
 const About = () => {
   return (
     <main className="block gap-2 text-gray-300 sm:flex">
@@ -34,7 +32,7 @@ const About = () => {
           for learning purposes.
         </p>
       </div>
-      <img src={welcom} className="mx-auto" width={200} alt="" />
+      <img src={"hello-removebg.png"} className="mx-auto" width={200} alt="" />
     </main>
   );
 };
