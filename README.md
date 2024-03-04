@@ -10,4 +10,4 @@ this website was made with reactjs, tailwindcss, and Jikan API.
 
 [website link](https://anime-app-sage.vercel.app/)
 
-[my website](https://douiri.org/)
+[my website](https://idriss.douiri.org/)

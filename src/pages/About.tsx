@@ -24,7 +24,7 @@ const About = () => {
           by{" "}
           <a
             className="text-primary/80 underline"
-            href="https://douiri.org"
+            href="https://idriss.douiri.org"
             target="_blank"
           >
             <strong>Idriss Douiri</strong>

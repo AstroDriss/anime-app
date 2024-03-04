@@ -2,15 +2,15 @@ import avatar from "../assets/avatar.png";
 
 const Ad = () => {
   return (
-    <aside className="bg-gradient-to-r from-yellow-200 to-primary p-6 rounded-md flex sm:flex-row sm:justify-between relative flex-col-reverse items-center text-center sm:text-left">
+    <aside className="relative flex flex-col-reverse items-center rounded-md bg-gradient-to-r from-yellow-200 to-primary p-6 text-center sm:flex-row sm:justify-between sm:text-left">
       <div>
-        <h2 className="text-dark text-2xl uppercase mb-4 z-20 relative">
+        <h2 className="relative z-20 mb-4 text-2xl uppercase text-dark">
           want to visite the creator's website?
         </h2>
         <a
-          href="https://douiri.org"
+          href="https://idriss.douiri.org"
           target="_blank"
-          className="bg-dark text-light rounded-md py-1 px-2"
+          className="rounded-md bg-dark px-2 py-1 text-light"
         >
           portfolio
         </a>
@@ -18,7 +18,7 @@ const Ad = () => {
 
       <img
         src={avatar}
-        className="h-28 md:absolute md:top-0 md:right-8 md:h-full"
+        className="h-28 md:absolute md:right-8 md:top-0 md:h-full"
         alt=""
       />
     </aside>
